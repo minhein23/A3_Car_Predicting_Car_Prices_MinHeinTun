@@ -68,3 +68,4 @@ jobs:
             docker compose up -d
         env:
           SSH_CONFIG: ${{ github.workspace }}/config/ssh_config
+

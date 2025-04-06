@@ -2,7 +2,6 @@ import numpy as np
 import joblib
 import os
 import os
-assert os.path.exists("app/model/logistic_model.pkl"), "❌ Model file not found"
 
 
 def load_local_model():

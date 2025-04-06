@@ -56,13 +56,14 @@ jobs:
       - name: Deploy to AIT ML Brain Server
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.ML_HOST }}
+          host: ${{ secrets.BAZOOKA_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           proxy_host: ${{ secrets.ML_PROXY }}
           proxy_username: ${{ secrets.USERNAME }}
           proxy_key: ${{ secrets.PRIVATE_KEY }}
-          
+
             docker compose down
             docker compose up -d
         env:

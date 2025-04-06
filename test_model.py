@@ -1,13 +1,13 @@
 import numpy as np
 import joblib
 import sys
-from custom_logistic import LogisticRegression
+from app.code.custom_logistic import LogisticRegression
 
-# 🔧 Patch LogisticRegression into __main__ for unpickling to work
+# 🩹 Monkey-patch the class so joblib can find it during unpickling
 sys.modules['__main__'].LogisticRegression = LogisticRegression
 
 def load_local_model():
-    model_path = "app/model/logistic_model.pkl"
+    model_path = "app/code/model/logistic_model.pkl"
     return joblib.load(model_path)
 
 def test_input_compatibility():

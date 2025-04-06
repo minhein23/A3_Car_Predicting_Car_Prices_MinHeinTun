@@ -59,10 +59,10 @@ jobs:
           host: ${{ secrets.ML_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           proxy_host: ${{ secrets.ML_PROXY }}
           proxy_username: ${{ secrets.USERNAME }}
           proxy_key: ${{ secrets.PRIVATE_KEY }}
+          proxy_passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             docker compose down
             docker compose up -d

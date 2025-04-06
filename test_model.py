@@ -1,10 +1,13 @@
 import numpy as np
 import joblib
 import os
+import os
+assert os.path.exists("app/model/logistic_model.pkl"), "❌ Model file not found"
+
 
 def load_local_model():
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(base_dir, "app", "model", "logistic_model.pkl")
+    model_path = os.path.join(base_dir, "app","code", "model", "logistic_model.pkl")
     return joblib.load(model_path)
 
 def test_input_compatibility():

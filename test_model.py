@@ -1,30 +1,39 @@
-import unittest
 import numpy as np
-import joblib
+import mlflow
+import mlflow.pyfunc
 
-# ✅ Load the model (adjust the path if needed)
-model = joblib.load("app/code/model/logistic_model.pkl")
 
-class TestCarPriceModel(unittest.TestCase):
-    def test_input_shape(self):
-        """
-        Test if the model accepts input of shape (1, 36)
-        """
-        sample_input = np.random.rand(1, 36)
-        try:
-            prediction = model.predict(sample_input)
-            passed = True
-        except Exception as e:
-            passed = False
-        self.assertTrue(passed, "❌ Model should accept input of shape (1, 36)")
+def fetch_model():
+    """
+    Loads the MLflow model from the staging environment.
+    """
+    tracking_url = "https://mlflow.ml.brain.cs.ait.ac.th"
+    mlflow.set_tracking_uri(tracking_url)
+    model_path = "models:/st125367-a3-model/Staging"
+    return mlflow.pyfunc.load_model(model_path)
 
-    def test_output_shape(self):
-        """
-        Test if the model outputs prediction of shape (1,)
-        """
-        sample_input = np.random.rand(1, 36)
-        prediction = model.predict(sample_input)
-        self.assertEqual(prediction.shape, (1,), "❌ Prediction output shape should be (1,)")
 
-if __name__ == '__main__':
-    unittest.main()
+def test_input_compatibility():
+    """
+    Ensures the model accepts the expected input format and returns a result.
+    """
+    classifier = fetch_model()
+    test_features = np.array([[2015, 80, 1500, 1, 0, 0]])
+    prediction = classifier.predict(test_features)
+    assert prediction is not None, "No output returned from model prediction."
+
+
+def test_output_structure():
+    """
+    Confirms the output shape matches expected dimensions (1 prediction).
+    """
+    classifier = fetch_model()
+    test_features = np.array([[2015, 80, 1500, 1, 0, 0]])
+    prediction = np.asarray(classifier.predict(test_features))
+    assert prediction.shape[0] == 1, f"Expected output length of 1, got {prediction.shape[0]}"
+
+
+if __name__ == "__main__":
+    test_input_compatibility()
+    test_output_structure()
+    print("✅ All model shape tests passed.")

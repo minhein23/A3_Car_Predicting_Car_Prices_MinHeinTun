@@ -3,7 +3,7 @@ import joblib
 import os
 
 def load_local_model():
-    model = joblib.load("model/logistic_model.pkl")
+    model = joblib.load("app/model/logistic_model.pkl")
     return joblib.load(model)
 
 def test_input_compatibility():

@@ -8,7 +8,7 @@ import sys
 sys.modules['__main__'].LogisticRegression = LogisticRegression
 
 def load_local_model():
-    model_path = os.path.join("app", "model", "logistic_model.pkl")
+    model_path = os.path.join("app", "code", "model", "logistic_model.pkl")
     return joblib.load(model_path)
 
 def test_input_compatibility():

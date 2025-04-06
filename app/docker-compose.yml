@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  flask-app:
+    image: minheintun/mla3:latest
+    platform: linux/amd64
+    container_name: minheintun_mla3
+    environment:
+      - Host=0.0.0.0
+      - Port=8000
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+      # Define backend service port for Traefik
+      - "traefik.http.services.web-st125367.loadbalancer.server.port=8000"
+      # Define routing for development
+      - "traefik.http.routers.web-st125367.rule=Host(`st125367.ml.brain.cs.ait.ac.th`)"
+      # Enable SSL for testing (optional)
+      - "traefik.http.routers.web-st125367.tls=true"
+      - "traefik.http.routers.web-st125367.tls.certresolver=staging"
+      - "traefik.http.routers.web-st125367.entrypoints=websecure"
+
+    networks:
+      - default
+      - traefik_default
+
+networks:
+  default:
+  traefik_default:
+    external: true

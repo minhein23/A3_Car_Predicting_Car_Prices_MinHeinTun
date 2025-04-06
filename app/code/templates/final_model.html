@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Final Model - Car Price Class Predictor</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #1f2937;
+      color: white;
+      padding: 1em 2em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5em;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 3em auto;
+      background-color: white;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.8em;
+      margin-bottom: 0.5em;
+      color: #111827;
+    }
+
+    p.subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 2em;
+      font-size: 0.95em;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1.2em;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 0.4em;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 2em;
+      padding: 12px;
+      background-color: #6b21a8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 2em;
+      text-align: center;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div><strong>Car Price Prediction</strong></div>
+    <div>
+      <a href="/">Home</a>
+      <a href="/old_model">Old Model</a>
+      <a href="/new_model">New Model</a>
+      <a href="/final_model">Final Model</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>🚗 Final Model — Predict Car Price</h2>
+    <p class="subtitle">Drop your car's details and let the model do the magic!✨</p>
+
+    <form method="POST" action="/predict">
+
+      <label for="brand">Car Brand:</label>
+      <select name="brand" required>
+        {% for brand in brands %}
+          <option value="{{ brand }}">{{ brand }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="year">Year:</label>
+      <input type="number" name="year" required placeholder="e.g. 2018">
+
+      <label for="engine">Engine (CC):</label>
+      <input type="number" name="engine" step="any" required placeholder="e.g. 1200">
+
+      <label for="max_power">Max Power (HP):</label>
+      <input type="number" name="max_power" step="any" required placeholder="e.g. 110">
+
+      <label for="transmission">Transmission:</label>
+      <select name="transmission" required>
+        <option value="Manual">Manual</option>
+        <option value="Automatic">Automatic</option>
+      </select>
+
+      <button type="submit">Predict</button>
+
+      {% if prediction is not none %}
+        <div class="result">
+          🚀 <strong>Predicted Price:</strong> {{ prediction }}
+        </div>
+      {% endif %}
+    </form>
+  </div>
+
+</body>
+</html>

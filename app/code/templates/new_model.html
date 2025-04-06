@@ -1,0 +1,105 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Importing bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Input Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      /* Custom button color to match index.html */
+      .btn-custom-purple {
+        background-color: #800080; /* Purple */
+        border-color: #800080;
+        color: white;
+      }
+      .btn-custom-purple:hover {
+        background-color: #6A0DAD; /* Darker Purple on Hover */
+        border-color: #6A0DAD;
+      }
+    </style>
+  </head>
+<body>
+    {% include 'navbar.html' %}
+
+  <!-- Display flashed messages in the middle -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+  <div class="d-flex justify-content-center align-items-center" style="min-height: 10vh;">
+    <div class="alert alert-success text-center">
+      <ul class="list-unstyled mb-0">
+        {% for category, message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endif %}
+{% endwith %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center">New model? Drop specs. 🚗✨</h1>
+                <!-- User Instructions -->
+                <p>
+                  Drop your car’s brand, engine power, and mileage below to snag a predicted price—no sweat if you’re missing deets, we’ll fill in the blanks and vibe it out. 🚗✨
+                </p>
+                <!-- User data input -->
+                <form id="data-form" action="/process-data_new" method="post">
+                    <div class="form-group">
+                        <label for="name">Name: Example- Toyota</label>
+                        <input type="text" id="name" name="name" class="form-control">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="engine">Engine: Example-1200 (Only between 600 and 3700 CC)</label>
+                        <input type="text" id="engine" name="engine" class="form-control">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="mileage">Mileage: : Example-11.5 (Only 1 to 100)</label>
+                        <input type="text" id="mileage" name="mileage" class="form-control">
+                    </div>
+                
+                    <!-- Add spacing above the button and use custom color -->
+                    <div class="mt-4">  <!-- Added margin-top -->
+                        <button type="submit" class="btn btn-custom-purple btn-lg w-100">Predict Price</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+        <!-- Display predicted result -->
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <div id="processed-data" class="text-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <!-- Listens to submit button, processes the input data and shows the result without reloading or redirecting the user -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('data-form');
+        const processedDataDiv = document.getElementById('processed-data');
+    
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            const formData = new FormData(form);
+    
+            fetch('/process-data_new', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                processedDataDiv.innerHTML = `<p style="font-size: 18px; font-weight: bold;">Your car can be sold for: ${result}!</p>`;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+    </script>
+</body>
+</html>

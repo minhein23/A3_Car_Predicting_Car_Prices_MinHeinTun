@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Price Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .btn-custom-orange {
+      background-color: #FFA500; /* Orange */
+      border-color: #FFA500;
+      color: white;
+    }
+    .btn-custom-orange:hover {
+      background-color: #FF8C00; /* Darker Orange on Hover */
+      border-color: #FF8C00;
+    }
+
+    .btn-custom-purple {
+      background-color: #800080; /* Purple */
+      border-color: #800080;
+      color: white;
+    }
+    .btn-custom-purple:hover {
+      background-color: #6A0DAD; /* Darker Purple on Hover */
+      border-color: #6A0DAD;
+    }
+
+    .btn-custom-green {
+      background-color: #28a745; /* Green */
+      border-color: #28a745;
+      color: white;
+    }
+    .btn-custom-green:hover {
+      background-color: #218838; /* Darker Green on Hover */
+      border-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <!-- Include the navbar -->
+  {% include 'navbar.html' %}
+
+  <div class="container mt-5">
+    <h1 class="text-center">"Slide in, predict your ride’s price!" 🚗</h1>
+    <p class="text-center">Pick your vibe: Predict your car’s price—new or old model, we got you. 🚗</p>
+
+    <!-- Vertical layout for buttons -->
+    <div class="d-flex flex-column align-items-center">
+      <div class="mb-3">
+        <a href="/old_model" class="btn btn-custom-orange btn-lg">Use Old Model</a>
+      </div>
+      <div class="mb-3">
+        <a href="/new_model" class="btn btn-custom-purple btn-lg">Use New Model</a>
+      </div>
+      <div>
+        <a href="/final_model" class="btn btn-custom-green btn-lg">Use Final Model (A3)</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center mt-5 py-3 bg-light">
+    <p class="mb-0">Made by st125367—keeping it real for your car vibes. 🚗</p>
+  </footer>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

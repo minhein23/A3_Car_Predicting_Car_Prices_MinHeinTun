@@ -7,7 +7,7 @@ def fetch_model():
     """
     Loads the MLflow model from the staging environment.
     """
-    tracking_url = "https://mlflow.ml.brain.cs.ait.ac.th"
+    tracking_url = "https://admin:password@mlflow.ml.brain.cs.ait.ac.th"
     mlflow.set_tracking_uri(tracking_url)
     model_path = "models:/st125367-a3-model/Staging"
     return mlflow.pyfunc.load_model(model_path)

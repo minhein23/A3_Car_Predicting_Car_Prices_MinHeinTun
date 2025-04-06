@@ -43,7 +43,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -51,21 +51,18 @@ jobs:
           context: .
           file: app/Dockerfile
           push: true
-          tags: harryphoebus/ml_assignment03:latest
+          tags: minheintun/ml_a3:latest
 
       - name: Deploy to AIT ML Brain Server
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          proxy_host: ${{ secrets.PROXY_HOST }}
-          proxy_username: ${{ secrets.SSH_USERNAME }}
-          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          proxy_passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          host: ${{ secrets.ML_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          proxy_host: ${{ secrets.ML_PROXY }}
+          proxy_username: ${{ secrets.USERNAME }}
+          proxy_key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            cd st125064_03
             docker compose down
             docker compose up -d
         env:

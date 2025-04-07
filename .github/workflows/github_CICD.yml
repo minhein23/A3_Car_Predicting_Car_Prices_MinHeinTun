@@ -69,7 +69,6 @@ jobs:
         
             before_script: |
               echo "Connected to mlbrain ✅"
-              cd st125064_03
         
             script: |
               docker compose down

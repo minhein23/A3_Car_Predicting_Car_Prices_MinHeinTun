@@ -49,33 +49,25 @@ jobs:
       - name: Set up SSH config
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/st125367
-          chmod 600 ~/.ssh/st125367
-
+          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+      
           cat << 'EOF' > ~/.ssh/config
           Host bazooka
             HostName bazooka.cs.ait.ac.th
             User st125367
-            IdentityFile ~/.ssh/st125367
-
+            IdentityFile ~/.ssh/id_ed25519
+      
           Host mlbrain
             HostName ml.brain.cs.ait.ac.th
             User st125367
-            IdentityFile ~/.ssh/st125367
+            IdentityFile ~/.ssh/id_ed25519
             ProxyJump bazooka
             StrictHostKeyChecking no
             UserKnownHostsFile /dev/null
           EOF
-
+      
           chmod 600 ~/.ssh/config
-          ssh-keyscan -p 22 -H bazooka.cs.ait.ac.th >> ~/.ssh/known_hosts 2>/dev/null 
+          ssh-keyscan -p 22 -H bazooka.cs.ait.ac.th >> ~/.ssh/known_hosts 2>/dev/null
           chmod 600 ~/.ssh/known_hosts
-
-      - name: Deploy on mlbrain
-        run: |
-          ssh -v st125367@mlbrain << 'EOF'
-          cd st125367/
-          docker compose down
-          docker compose pull
-          docker compose up -d
-          EOF
+      

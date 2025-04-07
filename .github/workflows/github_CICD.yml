@@ -70,4 +70,12 @@ jobs:
           chmod 600 ~/.ssh/config
           ssh-keyscan -p 22 -H bazooka.cs.ait.ac.th >> ~/.ssh/known_hosts 2>/dev/null
           chmod 600 ~/.ssh/known_hosts
-      
+
+      - name: Deploy to mlbrain
+        run: |
+          ssh -o "StrictHostKeyChecking=no" st125367@mlbrain << 'EOF'
+          cd ~/st125367  # Change to your app directory on the server
+          docker compose down
+          docker compose pull
+          docker compose up -d
+          EOF

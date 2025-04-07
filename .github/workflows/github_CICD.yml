@@ -54,25 +54,37 @@ jobs:
           tags: minheintun/ml_a3:latest
       
       - name: Deploy to School Server via SSH (Docker Compose)
-
-        uses: appleboy/ssh-action@v0.1.6
+        uses: appleboy/ssh-action@v1.0.0
         with:
-            host: ${{ secrets.MLBRAIN }}
-            username: ${{ secrets.USERNAME_MLBRAIN }}
-            key: ${{ secrets.SSH_PRIVATE_KEY }}
-            passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          host: ${{ vars.HOST }}
+          username: ${{ secrets.USERNAME_MLBRAIN }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_host: ${{ vars.BAZOOKA }}
+          proxy_username: ${{ secrets.USERNAME_BAZOOKA }}
+          proxy_key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            tag=${{ github.ref_name }} docker compose -f st125367_a3/docker-compose.yaml down
+            tag=${{ github.ref_name }} docker compose -f st125367_a3/docker-compose.yaml up -d
+
+
+        # uses: appleboy/ssh-action@v0.1.6
+        # with:
+        #     host: ${{ secrets.MLBRAIN }}
+        #     username: ${{ secrets.USERNAME_MLBRAIN }}
+        #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+        #     passphrase: ${{ secrets.SSH_PASSPHRASE }}
         
-            proxy_host: ${{ secrets.BAZOOKA }}
-            proxy_username: ${{ secrets.USERNAME_BAZOOKA }}
-            proxy_key: ${{ secrets.PRIVATE_KEY }}
-            proxy_passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        #     proxy_host: ${{ secrets.BAZOOKA }}
+        #     proxy_username: ${{ secrets.USERNAME_BAZOOKA }}
+        #     proxy_key: ${{ secrets.PRIVATE_KEY }}
+        #     proxy_passphrase: ${{ secrets.SSH_PASSPHRASE }}
         
-            before_script: |
-              echo "Connected to mlbrain ✅"
+        #     before_script: |
+        #       echo "Connected to mlbrain ✅"
         
-            script: |
-              docker compose down
-              docker compose up -d
+        #     script: |
+        #       docker compose down
+        #       docker compose up -d
         
 
       # - name: Deploy to School Server via SSH (Docker Compose)

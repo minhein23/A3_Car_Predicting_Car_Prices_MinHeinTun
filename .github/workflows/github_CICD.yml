@@ -65,7 +65,6 @@ jobs:
           proxy_key: ${{ secrets.PRIVATE_KEY }}
           proxy_passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd st125064_03
             docker compose down
             docker compose up -d
         env:

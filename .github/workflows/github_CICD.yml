@@ -61,7 +61,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           proxy_host: ${{ secrets.BAZOOKA }}
           proxy_username: ${{ secrets.USERNAME_BAZOOKA }}
-          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_key: ${{ secrets.PRIVATE_KEY }}
           script: |
             cd st125064_03
             docker compose down

@@ -32,39 +32,50 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+
     steps:
-      - name: Check docker repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: app/Dockerfile
-          push: true
-          tags: minheintun/ml_a3:latest
+      - name: Build Docker Image
+        run: docker build -t minheintun/ml_a3:latest -f app/Dockerfile .
 
-      - name: Deploy to AIT ML Brain Server
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.BAZOOKA_HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          proxy_host: ${{ secrets.ML_PROXY }}
-          proxy_username: ${{ secrets.USERNAME }}
-          proxy_key: ${{ secrets.PRIVATE_KEY }}
+      - name: Push Docker Image
+        run: docker push minheintun/ml_a3:latest
 
-            docker compose down
-            docker compose up -d
-        env:
-          SSH_CONFIG: ${{ github.workspace }}/config/ssh_config
+      - name: Set up SSH config
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/st125367
+          chmod 600 ~/.ssh/st125367
 
+          cat << 'EOF' > ~/.ssh/config
+          Host bazooka
+            HostName bazooka.cs.ait.ac.th
+            User st125367
+            IdentityFile ~/.ssh/st125367
+
+          Host mlbrain
+            HostName ml.brain.cs.ait.ac.th
+            User st125367
+            IdentityFile ~/.ssh/st125367
+            ProxyJump bazooka
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+          EOF
+
+          chmod 600 ~/.ssh/config
+          ssh-keyscan -p 22 -H bazooka.cs.ait.ac.th >> ~/.ssh/known_hosts 2>/dev/null 
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy on mlbrain
+        run: |
+          ssh -v st125367@mlbrain << 'EOF'
+          cd st125367/
+          docker compose down
+          docker compose pull
+          docker compose up -d
+          EOF

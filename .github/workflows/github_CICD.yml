@@ -68,5 +68,5 @@ jobs:
             cd st125064_03
             docker compose down
             docker compose up -d
-        env:
-          SSH_CONFIG: ${{ github.workspace }}/config/ssh_config
+        #env:
+          #SSH_CONFIG: ${{ github.workspace }}/config/ssh_config

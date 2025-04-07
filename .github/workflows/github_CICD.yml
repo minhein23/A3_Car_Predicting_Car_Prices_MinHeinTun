@@ -56,7 +56,7 @@ jobs:
       - name: Deploy to School Server via SSH (Docker Compose)
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ vars.HOST }}
+          host: ${{ vars.MLBRAIN }}
           username: ${{ secrets.USERNAME_MLBRAIN }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           proxy_host: ${{ vars.BAZOOKA }}

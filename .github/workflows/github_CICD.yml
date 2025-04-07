@@ -73,7 +73,7 @@ jobs:
 
       - name: Deploy to mlbrain
         run: |
-          ssh -v st125367@ml2023 << 'EOF'
+          ssh -v st125367@mlbrain << 'EOF'
           cd st125367/
           docker compose down
           docker compose pull 

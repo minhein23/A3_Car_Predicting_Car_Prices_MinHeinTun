@@ -73,9 +73,9 @@ jobs:
 
       - name: Deploy to mlbrain
         run: |
-          ssh -o "StrictHostKeyChecking=no" st125367@mlbrain << 'EOF'
-          cd ~/st125367  # Change to your app directory on the server
+          ssh -v st125367@ml2023 << 'EOF'
+          cd st125367/
           docker compose down
-          docker compose pull
-          docker compose up -d
+          docker compose pull 
+          docker compose up -d 
           EOF

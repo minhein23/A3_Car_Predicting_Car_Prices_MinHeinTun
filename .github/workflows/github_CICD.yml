@@ -52,20 +52,45 @@ jobs:
           file: app/Dockerfile
           push: true
           tags: minheintun/ml_a3:latest
-
+      
       - name: Deploy to School Server via SSH (Docker Compose)
+
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.MLBRAIN }}
-          username: ${{ secrets.USERNAME_MLBRAIN }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          proxy_host: ${{ secrets.BAZOOKA }}
-          proxy_username: ${{ secrets.USERNAME_BAZOOKA }}
-          proxy_key: ${{ secrets.PRIVATE_KEY }}
-          proxy_passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            docker compose down
-            docker compose up -d
-        env:
-          SSH_CONFIG: ${{ github.workspace }}/config/ssh_config
+            host: ${{ secrets.MLBRAIN }}
+            username: ${{ secrets.USERNAME_MLBRAIN }}
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        
+            proxy_host: ${{ secrets.BAZOOKA }}
+            proxy_username: ${{ secrets.USERNAME_BAZOOKA }}
+            proxy_key: ${{ secrets.PRIVATE_KEY }}
+            proxy_passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        
+            before_script: |
+              echo "Connected to mlbrain ✅"
+              cd st125064_03
+        
+            script: |
+              docker compose down
+              docker compose up -d
+        
+
+      # - name: Deploy to School Server via SSH (Docker Compose)
+      #   uses: appleboy/ssh-action@v0.1.6
+      #   with:
+      #     host: ${{ secrets.MLBRAIN }}
+      #     username: ${{ secrets.USERNAME_MLBRAIN }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     passphrase: ${{ secrets.SSH_PASSPHRASE }}
+      #     proxy_host: ${{ secrets.BAZOOKA }}
+      #     proxy_username: ${{ secrets.USERNAME_BAZOOKA }}
+      #     proxy_key: ${{ secrets.PRIVATE_KEY }}
+      #     proxy_passphrase: ${{ secrets.SSH_PASSPHRASE }}
+      #     before_script:
+            
+      #     script: |
+      #       docker compose down
+      #       docker compose up -d
+      #   env:
+      #     SSH_CONFIG: ${{ github.workspace }}/config/ssh_config
